@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "dist/src",
+    "rootDir": "./server",
+    "sourceMap": false,
+    "strict": true,
+    "target": "es2017",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  },
+  "compileOnSave": true,
+  "include": [
+    "./server/**/*",
+    "./server/services-config/app.json"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
