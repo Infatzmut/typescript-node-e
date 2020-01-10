@@ -15,7 +15,8 @@
   "compileOnSave": true,
   "include": [
     "./server/**/*",
-    "./server/services-config/app.json"
+    "./server/services-config/app.json",
+    "./server/swagger.json"
   ],
   "exclude": [
     "node_modules"

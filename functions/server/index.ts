@@ -3,6 +3,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import fileSystem from 'fs';
 import path from 'path';
+import swaggerUI from 'swagger-ui-express';
+import * as swaggerDocument from './swagger.json';
 // importing routes
 import mainController from './controllers';
 const app = express();
@@ -21,6 +23,7 @@ app.use(morgan('combined', {
 }));
 // Routes
 app.use('/api', mainController);
+app.use('/api-docs',swaggerUI.serve, swaggerUI.setup(swaggerDocument, {explorer: true}));
 
 // Starting the server
 
