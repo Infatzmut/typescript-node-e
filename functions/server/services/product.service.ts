@@ -1,4 +1,5 @@
 import {baseService} from './base.service';
+import {Product} from '../models/product';
 
 export function setupProductService(dbInstance: any){
     
@@ -30,7 +31,7 @@ async function findOneProduct(id: string){
         const doc = await collection.doc(id).get();
          result = doc.data()
     } catch(error){
-       // TODO : logger errores
+       // TODO : logger errors
     }
     return result;
 }
@@ -50,7 +51,7 @@ async function createProduct(product: any){
         return baseService.getServiceResponse("Error" ,400, "Must be an object", {})
     }
     try{
-         await collection.add(product).then((response: { id: any; }) => {
+         await collection.add(product).then((response: { id: String; }) => {
             baseService.getServiceResponse("Ok" ,201, "Product added", `Id: ${response.id}`); 
          })            
     }catch(error){
@@ -58,13 +59,14 @@ async function createProduct(product: any){
     } 
     return baseService.returnData;
 }
-
-    async function updateProduct(id: string, data: any){
+   
+    async function updateProduct(id: string, data: Product){
         try{   
-            const product = await findOneProduct(id);
-            // product.info = data;
+            const productSearched = await collection.doc(id).get()
+            const product = productSearched.data();
+            product.info = data;
             await collection.doc(id).update(product);
-            let orderRef = await collection.doc(id).get();
+            const orderRef = await collection.doc(id).get();
             const orderUpdated = {
                 id,
                 ...orderRef.data()
