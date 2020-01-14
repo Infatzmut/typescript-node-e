@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import {productController} from './productController';
 import {productsController} from './products.controller';
-import {checkIfAdmin} from '../../services/auth.service';
+import {checkIfAdmin} from '../middlewares';
 const router: Router = Router();
 
 router.get('/',productsController.get);
