@@ -16,7 +16,7 @@ class UserController {
         let responseData;
         const {displayName, password, email, role } = req.body;
         
-        if(!displayName || !password || !email || role){
+        if(!displayName || !password || !email || !role){
             responseCode = 400;
             responseData = baseController.getErrorResponse("Misssing fields")
         } else {
@@ -25,6 +25,8 @@ class UserController {
                 responseCode = newUser.responseCode;
                 responseData = baseController.getSuccessResponse(newUser.data,newUser.message);
             } catch(error) {
+                console.log(error);
+                
                 responseCode = 500;
                 responseData = baseController.getErrorResponse(error.message)        
             }  

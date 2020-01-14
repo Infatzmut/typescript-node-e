@@ -5,7 +5,8 @@ import {setupDbServices} from '../../services';
 const dbServices = setupDbServices();
 
 export const checkAuthorization = (req: Request, res: Response, next: NextFunction) => {
-    if(req.headers.authtoken && req.headers.authtoken.toString().split(' ')[0] === 'Bearer'){
+    if(req.headers.authtoken && req.headers.authtoken.toString().split(' ')[0] === 'Bearer' 
+        && req.headers.authtoken.toString().split(' ')[1]){
         admin.auth().verifyIdToken(req.headers.authtoken.toString().split(' ')[1])
             .then((userInfo)=> {
                 next(userInfo)
@@ -22,6 +23,8 @@ export const checkIfAdmin = (req: Request, res: Response, next: NextFunction) =>
         checkAuthorization(req, res, async (info) =>{
             const {uid} = info
             const searchRole = await dbServices.authService.verifyUser(uid)
+            console.log(searchRole);
+            
             if(searchRole.data === 'admin'){
                 next();
                 return;

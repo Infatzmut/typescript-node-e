@@ -9,7 +9,7 @@ function errorLogger(message :string){
       second: '2-digit'
     })
     const fullmessage = `${message}  ${date} \n`;
-    setTimeout(() =>fs.appendFile(path.join(__dirname, '../../access.log'), fullmessage, (err) => {
+    setTimeout(() =>fs.appendFile(path.join(__dirname, '../access.log'), fullmessage, (err) => {
       if(err) throw err;
     }),200);
   }
