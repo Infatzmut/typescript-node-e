@@ -13,7 +13,7 @@ class ProductController {
            return res.status(400).json(baseController.getErrorResponse('Param is missing'))
        }
        try{
-            let product = await dbservice.productService.getProduct(req.params.id);
+            const product = await dbservice.productService.getProduct(req.params.id);
             responseCode = product.responseCode;
             responseData = baseController.getSuccessResponse(product.data,product.message);
        }catch(error){
