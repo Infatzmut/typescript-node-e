@@ -31,7 +31,7 @@ class ProductController {
         let responseCode;
         let responseData;
         try {
-            let productDeleted = await dbservice.productService.deleteProduct(req.params.id);
+            const productDeleted = await dbservice.productService.deleteProduct(req.params.id);
             responseCode = productDeleted.responseCode;
             responseData = baseController.getSuccessResponse(
                 productDeleted.data, 

@@ -2,6 +2,7 @@ import {baseService} from './base.service'
 
 export function setupOrderDetailService(dbInstance: any){
     const collection = dbInstance.collection('orderDetails');
+    
     const getDetails = async (orderId: String) => {
         let orderDetail = {}
         try{

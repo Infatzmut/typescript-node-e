@@ -19,18 +19,17 @@ export const checkAuthorization = (req: Request, res: Response, next: NextFuncti
     }
 } 
 
-export const checkIfAdmin = (req: Request, res: Response, next: NextFunction) => {
+export const checkIfAdmin =async (req: Request, res: Response, next: NextFunction) => {
+        let searchRole: any;
         checkAuthorization(req, res, async (info) =>{
             const {uid} = info
-            const searchRole = await dbServices.authService.verifyUser(uid)
-            console.log(searchRole);
-            
-            if(searchRole.data === 'admin'){
+             searchRole  = await dbServices.authService.verifyUser(uid)
+            if(searchRole.data.role === 'admin'){
                 next();
                 return;
             }
             else {
-                return res.status(203).json({"message":"Unauthorized"})
+                return res.status(403).json({"message":"Unauthorized, not an admin user"})
             }
         } )
 }

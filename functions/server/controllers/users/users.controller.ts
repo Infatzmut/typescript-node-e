@@ -11,7 +11,7 @@ class UserController {
 
     }*/
 
-    async post (req: Request, res: Response) {
+    async createUser (req: Request, res: Response) {
         let responseCode;
         let responseData;
         const {displayName, password, email, role } = req.body;
@@ -21,18 +21,18 @@ class UserController {
             responseData = baseController.getErrorResponse("Misssing fields")
         } else {
             try {
-                const newUser = await dbServices.authService.createAdminUser(displayName, password, email, role);
+                const newUser = await dbServices.authService.createUser(displayName, password, email, role);
                 responseCode = newUser.responseCode;
                 responseData = baseController.getSuccessResponse(newUser.data,newUser.message);
             } catch(error) {
-                console.log(error);
-                
                 responseCode = 500;
                 responseData = baseController.getErrorResponse(error.message)        
             }  
         }
         return res.status(responseCode).json(responseData)
+
     }
+
 }
 
 export const userController = new UserController();

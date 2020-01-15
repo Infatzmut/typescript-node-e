@@ -4,7 +4,8 @@ import {baseService} from './base.service';
 
 export function setupAuthServices (dbInstance: any, admin: any) {
     const collection = dbInstance.collection('users');
-    const createAdminUser = async (displayName: string, password: string, email:string, role: string) => {
+    
+    const createUser = async (displayName: string, password: string, email:string, role: string) => {
         try {
             const {uid} = await admin.createUser({displayName , password , email });
             const newUser = {
@@ -13,8 +14,7 @@ export function setupAuthServices (dbInstance: any, admin: any) {
                 uid,
                 role
             }
-            await collection.add(newUser)    
-            await admin.setCustomUserClaims(uid, {role});
+            await collection.add(newUser); 
             baseService.getServiceResponse('Ok', 201, 'Created Successfully', {uid, role})
         } catch( error){
             baseService.getServiceResponse('Error', 500, `Error : ${error.code} - ${error.message}`, {})
@@ -22,33 +22,31 @@ export function setupAuthServices (dbInstance: any, admin: any) {
         return baseService.returnData;
     }
 
-    const verifyUser = (uid: string) => {
+    const verifyUser = async (uid: string) => {
+        let user  
         try {
-            collection.where('uid', '==', uid).get()
-            .then((snapshot: { empty: any; forEach: (arg0: (doc: any) => void) => void; role: any; }) => {
-                if(snapshot.empty){
-                    baseService.getServiceResponse('Error', 404, 'Not found', {})
-                } else {
-                    snapshot.forEach(async (doc: any)  => {
-                       const user = {
+            await collection.where('uid', '==', uid).get()
+            .then((snapshot: { empty: any; forEach: (arg0: (doc: any) => void) => void; role: any; }) => { 
+                    snapshot.forEach((doc: any)  => {
+                        user = {
                            id : doc.id,
                            ...doc.data()
                        }
-                       console.log(user);
-                       
-                    baseService.getServiceResponse('Ok', 200, "Founded",await user)
-                    });   
-                                       
+                    }); 
                 }
-            })
+            )
+            baseService.getServiceResponse('Ok',200,"Successful",user)
         } catch (error) {
-            baseService.getServiceResponse('Error', 500, `Error : ${error.message}`, {})
+            console.log(error);      
+            baseService.getServiceResponse('Error', 400,error.message, {})
         }
-        return baseService.returnData;
+        return baseService.returnData
     }
+
+
     return {
-        createAdminUser,
-        verifyUser
+        createUser,
+        verifyUser,
     }
 }
 
