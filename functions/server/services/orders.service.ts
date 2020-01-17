@@ -58,11 +58,11 @@ export function setupOrderServices(dbInstance: any){
         return result;
     }
 
-    async function updateOrder(id: String, data: Order){
+    async function updateOrder(id: String, status: any){
         let newOrder: any;
         try{   
             newOrder = await findOne(id);
-            newOrder.status = data
+            newOrder.status = status;
             await collection.doc(id).update(newOrder)
             const orderRef = await collection.doc(id).get();
             const orderUpdated = {

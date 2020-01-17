@@ -2,8 +2,8 @@ import { baseController } from "../base.controller";
 import { Request, Response} from 'express';
 import {setupDbServices} from '../../services';
 
-
 const dbservice = setupDbServices();
+
 class OrderController {
     async update (req: Request, res: Response) {
         let responseCode;
